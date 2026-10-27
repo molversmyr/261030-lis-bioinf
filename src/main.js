@@ -28,8 +28,8 @@ const deck = new Reveal({
     menubarclass: 'menubar',
   },
   internation: {
-    locale: 'en',
-    localename: 'English',
+    locale: 'no',
+    localename: 'Norsk',
     switchselector: '.langchooser',
     languages: {
       en: {
