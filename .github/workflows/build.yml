@@ -1,0 +1,48 @@
+# The job name "build" is the status check required by the main-protection ruleset.
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HUSKY: "0"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Read pinned toolchain
+        id: gate
+        run: |
+          if [ -f package.json ] && [ -f .deck.json ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "node=$(node -p "require('./.deck.json').node")" >> "$GITHUB_OUTPUT"
+            echo "npm=$(node -p "require('./.deck.json').npm")" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v7
+        if: steps.gate.outputs.ready == 'true'
+        with:
+          node-version: ${{ steps.gate.outputs.node }}
+          cache: npm
+      - name: Install pinned npm
+        if: steps.gate.outputs.ready == 'true'
+        env:
+          NPM_VERSION: ${{ steps.gate.outputs.npm }}
+        run: npm install -g "npm@$NPM_VERSION"
+      - run: npm ci
+        if: steps.gate.outputs.ready == 'true'
+      - run: npm run build
+        if: steps.gate.outputs.ready == 'true'
+      - uses: actions/upload-artifact@v7
+        if: steps.gate.outputs.ready == 'true'
+        with:
+          name: deck
+          path: dist

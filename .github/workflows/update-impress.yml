@@ -1,0 +1,43 @@
+# Impress decks only: opens a PR when a new impress.js release is published.
+# Needs: Settings -> Actions -> General -> "Allow GitHub Actions to create and approve pull requests".
+# PRs created with GITHUB_TOKEN do not trigger workflows, so the required "build" check is
+# started explicitly via workflow_dispatch on the PR branch (the check attaches to the head commit).
+name: Check impress.js release
+
+on:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Update vendored impress.js
+        run: |
+          f=public/vendor/IMPRESS_VERSION
+          if [ ! -f "$f" ]; then echo "Not an impress deck; skipping."; exit 0; fi
+          current=$(tr -d '[:space:]' < "$f")
+          latest=$(gh api repos/impress/impress.js/releases/latest --jq .tag_name)
+          if ! [[ "$latest" =~ ^v?[0-9]+(\.[0-9]+)*$ ]]; then echo "Unexpected tag: $latest"; exit 1; fi
+          if [ "$current" = "$latest" ]; then echo "Up to date ($current)."; exit 0; fi
+          branch="deps/impress-$latest"
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then echo "PR branch already exists."; exit 0; fi
+          curl -fsSL "https://raw.githubusercontent.com/impress/impress.js/$latest/js/impress.js" -o public/vendor/impress.js
+          echo "$latest" > "$f"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add public/vendor
+          git commit -m "build(deps): update impress.js to $latest"
+          git push origin "$branch"
+          gh pr create --title "build(deps): update impress.js to $latest" --body "Automated update of the vendored impress.js." --base "${{ github.event.repository.default_branch }}" --head "$branch"
+          gh workflow run build.yml --ref "$branch"

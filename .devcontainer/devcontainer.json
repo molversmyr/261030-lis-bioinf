@@ -1,0 +1,16 @@
+{
+  "name": "Presentation deck",
+  "build": { "dockerfile": "Dockerfile" },
+  "remoteUser": "node",
+  "forwardPorts": [5173, 4173],
+  "portsAttributes": {
+    "5173": { "label": "Dev server", "onAutoForward": "notify" },
+    "4173": { "label": "Preview (built deck)", "onAutoForward": "notify" }
+  },
+  "postCreateCommand": "if [ -f package.json ]; then npm ci; else echo 'Template not initialized yet: run node scripts/init.mjs <reveal|impress>'; fi",
+  "customizations": {
+    "vscode": {
+      "extensions": ["editorconfig.editorconfig", "esbenp.prettier-vscode"]
+    }
+  }
+}

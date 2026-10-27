@@ -1,0 +1,50 @@
+# Fallback for repos created through the GitHub web UI.
+# Actions tab -> "Initialize deck" -> Run workflow -> pick a framework.
+# Run it BEFORE scripts/protect.sh (main rejects direct pushes afterwards).
+# Only touches non-workflow files (GITHUB_TOKEN cannot modify .github/workflows).
+name: Initialize deck
+
+on:
+  workflow_dispatch:
+    inputs:
+      framework:
+        description: Presentation framework
+        type: choice
+        required: true
+        options:
+          - reveal
+          - impress
+      node_channel:
+        description: Which Node release to pin
+        type: choice
+        default: latest
+        options:
+          - latest
+          - lts
+
+permissions:
+  contents: write
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+      - name: Apply framework flavor
+        env:
+          FRAMEWORK: ${{ inputs.framework }}
+          DECK_NODE_CHANNEL: ${{ inputs.node_channel }}
+        run: |
+          if [ -f .deck.json ]; then
+            echo "Already initialized; nothing to do."
+            exit 0
+          fi
+          node scripts/init.mjs "$FRAMEWORK"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: initialize $FRAMEWORK deck"
+          git push

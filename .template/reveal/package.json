@@ -1,0 +1,20 @@
+{
+  "name": "deck",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --host",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "reveal.js": "6.0.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.4",
+    "@commitlint/config-conventional": "21.2.4",
+    "husky": "9.1.7",
+    "vite": "8.3.4"
+  }
+}

@@ -1,0 +1,2 @@
+# Only the templates in this folder can be used; no empty "blank" issues.
+blank_issues_enabled: false
