@@ -1,31 +1,303 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Deck</title>
-  </head>
-  <body>
-    <div class="reveal">
-      <div class="slides">
-        <section>
-          <h1>Deck title</h1>
-          <p>Subtitle or presenter</p>
-        </section>
 
-        <section data-markdown>
-          <textarea data-template>
-            ## A Markdown slide
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="How bioinformaticians make advanced molecular pathology data reliable, interpretable and useful." />
+  <title>Bioinformatics in Molecular Pathology</title>
+</head>
 
-            - First point
-            - Second point
-
-            Note:
-            Speaker notes go here. Press "S" to open the speaker view.
-          </textarea>
-        </section>
+<body>
+  <div class="reveal">
+    <nav class="menubar" id="menubar" aria-label="Presentation navigation">
+      <div class="padbox brand" data-i18n="brand">MOLECULAR PATHOLOGY</div>
+      <ul class="menu"></ul>
+      <div class="padbox language-control">
+        <label for="language" data-i18n="language">Language</label>
+        <select class="langchooser" id="language">
+          <option value="en" data-i18n="english">English</option>
+          <option value="no" data-i18n="norwegian">Norsk</option>
+        </select>
       </div>
+    </nav>
+
+    <div class="slides">
+      <section id="opening" class="opening" data-sm="false">
+        <div class="opening-copy">
+          <p class="eyebrow" data-i18n="eyebrow">FROM SEQUENCE TO SIGNIFICANCE</p>
+          <h1 data-i18n="title">Why bioinformatics is essential to advanced molecular pathology</h1>
+          <p class="opening-lead" data-i18n="lead">
+            Turning complex molecular data into reliable evidence for diagnosis, prognosis and therapy.
+          </p>
+          <p class="opening-question" data-i18n="question">
+            And how does our role differ from that of molecular biologists?
+          </p>
+          <div class="opening-footer">
+            <span class="pulse-dot"></span>
+            <span data-i18n="start">A shared effort. A clearer answer.</span>
+          </div>
+        </div>
+        <div class="hero-graphic" aria-hidden="true">
+          <div class="helix helix-one"></div>
+          <div class="helix helix-two"></div>
+          <span class="molecule-node node-one"></span>
+          <span class="molecule-node node-two"></span>
+          <span class="molecule-node node-three"></span>
+          <span class="molecule-node node-four"></span>
+          <span class="molecule-node node-five"></span>
+        </div>
+      </section>
+      <section id="challenge" data-name="The data challenge" data-i18n="challenge-menu">
+        <div class="slide-heading">
+          <p class="eyebrow" data-i18n="eyebrow">THE DATA CHALLENGE</p>
+          <h2 data-i18n="title">A molecular test is more than a sequencer</h2>
+          <p class="slide-lead" data-i18n="lead">
+            Advanced testing connects laboratory work, computational analysis and clinical context.
+          </p>
+        </div>
+        <div class="workflow-strip" aria-label="Molecular pathology workflow">
+          <article class="workflow-step">
+            <span class="step-number">01</span>
+            <span class="step-icon specimen-icon" aria-hidden="true"></span>
+            <h3 data-i18n="step1-title">Specimen</h3>
+            <p data-i18n="step1-copy">Tumour tissue and clinical question</p>
+          </article>
+          <span class="workflow-arrow" aria-hidden="true">→</span>
+          <article class="workflow-step">
+            <span class="step-number">02</span>
+            <span class="step-icon assay-icon" aria-hidden="true"></span>
+            <h3 data-i18n="step2-title">Assay</h3>
+            <p data-i18n="step2-copy">A validated molecular method</p>
+          </article>
+          <span class="workflow-arrow" aria-hidden="true">→</span>
+          <article class="workflow-step">
+            <span class="step-number">03</span>
+            <span class="step-icon data-icon" aria-hidden="true"></span>
+            <h3 data-i18n="step3-title">Data</h3>
+            <p data-i18n="step3-copy">Thousands to millions of signals</p>
+          </article>
+          <span class="workflow-arrow" aria-hidden="true">→</span>
+          <article class="workflow-step">
+            <span class="step-number">04</span>
+            <span class="step-icon insight-icon" aria-hidden="true"></span>
+            <h3 data-i18n="step4-title">Insight</h3>
+            <p data-i18n="step4-copy">Quality-checked, interpreted findings</p>
+          </article>
+        </div>
+        <div class="callout">
+          <span class="callout-mark">!</span>
+          <p data-i18n="callout">
+            More data does not automatically mean more certainty. The analytical path must be controlled, transparent
+            and fit for purpose.
+          </p>
+        </div>
+      </section>
+
+      <section id="need" data-name="Why bioinformatics" data-i18n="need-menu">
+        <div class="slide-heading">
+          <p class="eyebrow" data-i18n="eyebrow">WHY BIOINFORMATICIANS?</p>
+          <h2 data-i18n="title">Complex data needs a dependable interpreter</h2>
+          <p class="slide-lead" data-i18n="lead">
+            We help turn raw output into evidence that can be reviewed, reproduced and used responsibly.
+          </p>
+        </div>
+        <div class="reason-grid">
+          <article class="reason-card">
+            <span class="card-index" data-i18n="card1-label">01 · SCALE</span>
+            <h3 data-i18n="card1-title">Find signal in the volume</h3>
+            <p data-i18n="card1-copy">
+              High-throughput assays produce far more measurements than can be assessed manually, consistently or
+              quickly.
+            </p>
+          </article>
+          <article class="reason-card">
+            <span class="card-index" data-i18n="card2-label">02 · QUALITY</span>
+            <h3 data-i18n="card2-title">Know when not to trust a call</h3>
+            <p data-i18n="card2-copy">
+              Quality checks, coverage review and artifact awareness help distinguish a plausible finding from a
+              technical false signal.
+            </p>
+          </article>
+          <article class="reason-card">
+            <span class="card-index" data-i18n="card3-label">03 · CONTEXT</span>
+            <h3 data-i18n="card3-title">Connect evidence to meaning</h3>
+            <p data-i18n="card3-copy">
+              Annotation and curated knowledge help place findings in biological and clinical context for expert review.
+            </p>
+          </article>
+          <article class="reason-card">
+            <span class="card-index" data-i18n="card4-label">04 · TRUST</span>
+            <h3 data-i18n="card4-title">Make every step traceable</h3>
+            <p data-i18n="card4-copy">
+              Versioned, validated workflows support reproducibility, auditability and consistent results over time.
+            </p>
+          </article>
+        </div>
+        <p class="bottom-line" data-i18n="bottom-line">
+          Our contribution: reliable analysis—not an automated diagnosis.
+        </p>
+      </section>
+
+      <section id="workflow" data-name="From data to evidence" data-i18n="workflow-menu">
+        <div class="slide-heading">
+          <p class="eyebrow" data-i18n="eyebrow">FROM DATA TO EVIDENCE</p>
+          <h2 data-i18n="title">Build a path from raw reads to reviewable findings</h2>
+          <p class="slide-lead" data-i18n="lead">
+            Each stage adds checks and context; each stage can also introduce uncertainty.
+          </p>
+        </div>
+        <div class="pipeline">
+          <article class="pipeline-stage">
+            <span class="pipeline-dot"></span>
+            <span class="pipeline-label" data-i18n="stage1-label">01 · PROCESS</span>
+            <h3 data-i18n="stage1-title">Prepare data</h3>
+            <p data-i18n="stage1-copy">Map reads and check sample-level quality.</p>
+          </article>
+          <article class="pipeline-stage">
+            <span class="pipeline-dot"></span>
+            <span class="pipeline-label" data-i18n="stage2-label">02 · MEASURE</span>
+            <h3 data-i18n="stage2-title">Detect candidates</h3>
+            <p data-i18n="stage2-copy">Identify variants or other assay-specific signals.</p>
+          </article>
+          <article class="pipeline-stage">
+            <span class="pipeline-dot"></span>
+            <span class="pipeline-label" data-i18n="stage3-label">03 · FILTER</span>
+            <h3 data-i18n="stage3-title">Assess evidence</h3>
+            <p data-i18n="stage3-copy">Review depth, quality and potential artifacts.</p>
+          </article>
+          <article class="pipeline-stage">
+            <span class="pipeline-dot"></span>
+            <span class="pipeline-label" data-i18n="stage4-label">04 · ANNOTATE</span>
+            <h3 data-i18n="stage4-title">Add context</h3>
+            <p data-i18n="stage4-copy">Relate findings to genes, disease and knowledge sources.</p>
+          </article>
+          <article class="pipeline-stage">
+            <span class="pipeline-dot"></span>
+            <span class="pipeline-label" data-i18n="stage5-label">05 · REVIEW</span>
+            <h3 data-i18n="stage5-title">Support a decision</h3>
+            <p data-i18n="stage5-copy">Present traceable evidence for expert interpretation.</p>
+          </article>
+        </div>
+        <div class="workflow-note">
+          <span class="note-icon" aria-hidden="true">↗</span>
+          <p data-i18n="note">
+            Bioinformatics supports the diagnostic team. Clinical interpretation and reporting remain governed by
+            qualified professionals and local procedures.
+          </p>
+        </div>
+      </section>
+
+      <section id="roles" data-name="Different roles, shared goal" data-i18n="roles-menu">
+        <div class="slide-heading">
+          <p class="eyebrow" data-i18n="eyebrow">DIFFERENT ROLES, SHARED GOAL</p>
+          <h2 data-i18n="title">Where our work differs—and where it meets</h2>
+          <p class="slide-lead" data-i18n="lead">
+            A useful distinction is the main problem each role is trained to solve.
+          </p>
+        </div>
+        <div class="role-comparison">
+          <article class="role-card wet-lab">
+            <div class="role-label"><span class="role-symbol">01</span><span data-i18n="lab-label">MOLECULAR
+                BIOLOGIST</span></div>
+            <h3 data-i18n="lab-title">Makes the assay work in the lab</h3>
+            <ul>
+              <li data-i18n="lab-point1">Develops, performs and optimizes laboratory methods</li>
+              <li data-i18n="lab-point2">Works with specimens, extraction, reagents and instruments</li>
+              <li data-i18n="lab-point3">Monitors controls, assay performance and wet-lab causes of failure</li>
+            </ul>
+            <div class="role-focus" data-i18n="lab-focus">PRIMARY LENS · THE BIOLOGICAL ASSAY</div>
+          </article>
+          <div class="role-bridge" aria-hidden="true">
+            <span>+</span>
+            <div></div>
+            <span>+</span>
+          </div>
+          <article class="role-card dry-lab">
+            <div class="role-label"><span class="role-symbol">02</span><span
+                data-i18n="bio-label">BIOINFORMATICIAN</span></div>
+            <h3 data-i18n="bio-title">Makes the data analysis dependable</h3>
+            <ul>
+              <li data-i18n="bio-point1">Builds, validates and maintains computational workflows</li>
+              <li data-i18n="bio-point2">Assesses data quality, analytical limits and potential artifacts</li>
+              <li data-i18n="bio-point3">Adds annotations and makes results reproducible and traceable</li>
+            </ul>
+            <div class="role-focus" data-i18n="bio-focus">PRIMARY LENS · THE COMPUTATIONAL ANALYSIS</div>
+          </article>
+        </div>
+        <div class="shared-work">
+          <span class="shared-icon">↔</span>
+          <p><strong data-i18n="shared-title">Together:</strong> <span data-i18n="shared-copy">validate the complete
+              test, investigate discordant results and improve quality across the whole pathway.</span></p>
+        </div>
+      </section>
+
+      <section id="together" data-name="Better together" data-i18n="together-menu">
+        <div class="slide-heading">
+          <p class="eyebrow" data-i18n="eyebrow">BETTER TOGETHER</p>
+          <h2 data-i18n="title">One finding. Two complementary lenses.</h2>
+          <p class="slide-lead" data-i18n="lead">
+            Example: a low-frequency variant appears in a tumour sequencing panel.
+          </p>
+        </div>
+        <div class="example-flow">
+          <article class="example-card lab-example">
+            <span class="example-kicker" data-i18n="lab-kicker">MOLECULAR BIOLOGIST ASKS</span>
+            <h3 data-i18n="lab-question">Could the sample or assay explain this signal?</h3>
+            <p data-i18n="lab-copy">Review sample quality, assay controls, library preparation and known method
+              limitations.</p>
+          </article>
+          <div class="example-connector" aria-hidden="true"><span>+</span></div>
+          <article class="example-card bio-example">
+            <span class="example-kicker" data-i18n="bio-kicker">BIOINFORMATICIAN ASKS</span>
+            <h3 data-i18n="bio-question">Is the signal supported by the data and pipeline?</h3>
+            <p data-i18n="bio-copy">Review read-level evidence, depth, quality metrics, artifact flags and workflow
+              behavior.</p>
+          </article>
+        </div>
+        <div class="team-result">
+          <span class="team-icon" aria-hidden="true">◎</span>
+          <div>
+            <p class="team-label" data-i18n="team-label">THE TEAM, INCLUDING THE PATHOLOGIST, THEN</p>
+            <p class="team-copy" data-i18n="team-copy">
+              Weighs the technical evidence, biological context and clinical question before conclusions are reported.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="takeaway" data-name="The takeaway" data-i18n="takeaway-menu">
+        <div class="slide-heading">
+          <p class="eyebrow" data-i18n="eyebrow">THE TAKEAWAY</p>
+          <h2 data-i18n="title">Different expertise. One dependable result.</h2>
+        </div>
+        <div class="takeaway-grid">
+          <article class="takeaway-card">
+            <span class="takeaway-number">01</span>
+            <div>
+              <h3 data-i18n="why-title">Why are bioinformaticians needed?</h3>
+              <p data-i18n="why-copy">To process complex molecular data with validated, quality-aware and reproducible
+                analysis—and make the evidence reviewable.</p>
+            </div>
+          </article>
+          <article class="takeaway-card">
+            <span class="takeaway-number">02</span>
+            <div>
+              <h3 data-i18n="difference-title">How does our role differ?</h3>
+              <p data-i18n="difference-copy">Molecular biologists focus on the biological assay and its laboratory
+                performance. Bioinformaticians focus on the computational workflow and its analytical performance.</p>
+            </div>
+          </article>
+        </div>
+        <p class="closing-line" data-i18n="closing">
+          Neither role replaces the other—or the pathologist’s clinical judgment. The strongest result comes from the
+          full team.
+        </p>
+      </section>
     </div>
-    <script type="module" src="./src/main.js"></script>
-  </body>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+
 </html>

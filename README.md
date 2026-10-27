@@ -8,6 +8,12 @@ Framework: **reveal.js** | Node 26.12.1 | npm 12.2.1 (pinned in `.deck.json`)
 2. `npm run dev` and open http://localhost:5173
 3. Edit index.html and src/main.js; styles are in `src/theme.css`.
 
+## Slides and translations
+
+Slide content lives in `index.html`. Text marked with `data-i18n` is translated by the Reveal.js Internation plugin using `locales/en.json` and `locales/no.json`; English (`en`) is the default. Keep each slide's translation keys aligned with its section ID in both JSON files. Navigation labels are in each file's `menubar` object.
+
+Internation 1.1.0 declares a Reveal.js 4 peer range; `.npmrc` allows installation with this deck's Reveal.js 6 dependency. The JSON catalogs are imported into the Vite bundle for reliable loading.
+
 ## Commits and branch protection
 
 `main` is protected: no direct pushes, no force-push, squash merges only, the `build` check must pass,
