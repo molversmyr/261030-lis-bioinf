@@ -1,5 +1,5 @@
 {
-  "name": "deck",
+  "name": "261030-lis-bioinf",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,6 +7,9 @@
     "build": "vite build",
     "preview": "vite preview --host",
     "prepare": "husky"
+  },
+  "dependencies": {
+    "reveal.js": "6.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "21.2.4",

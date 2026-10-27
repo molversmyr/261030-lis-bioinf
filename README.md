@@ -1,59 +1,41 @@
-# deck-template
+# 261030-lis-bioinf
 
-GitHub template for private presentation repos. Choose **reveal.js** or **impress.js** per repo.
-Both flavors share one interface: `npm run dev`, `npm run build` -> `dist/`.
+Framework: **reveal.js** | Node 26.12.1 | npm 12.2.1 (pinned in `.deck.json`)
 
-## One-time setup
+## Work on it
 
-1. Install: Docker, VS Code + "Dev Containers" extension, git, Node 18+ (or rely on Docker), GitHub CLI (`gh auth login`).
-2. Push this folder to a private GitHub repo and mark it as a template:
-   ```bash
-   git init -b main && git add -A && git commit -m "chore: initial template"
-   gh repo create deck-template --private --source=. --push
-   gh repo edit --template
-   ```
-   Do not run `scripts/protect.sh` on the template itself.
-3. Add to your shell profile (adjust the path and owner):
-   ```bash
-   export DECK_TEMPLATE=<your-github-user>/deck-template
-   alias new-deck='~/src/deck-template/scripts/new-deck.sh'
-   ```
+1. Open the folder in VS Code and choose **Reopen in Container**.
+2. `npm run dev` and open http://localhost:5173
+3. Edit index.html and src/main.js; styles are in `src/theme.css`.
 
-## Every new deck
+## Commits and branch protection
+
+`main` is protected: no direct pushes, no force-push, squash merges only, the `build` check must pass,
+and every commit message must follow Conventional Commits (`feat: ...`, `fix: ...`, `docs: ...`).
+A local hook (commitlint) checks each commit; GitHub enforces the same rule on `main`.
 
 ```bash
-new-deck quarterly-review reveal     # or: impress
-DECK_NODE_CHANNEL=lts new-deck ...   # pin the LTS line instead of the newest release
+git switch -c feat/roadmap-slide
+git commit -m "feat: add roadmap slide"
+git push -u origin HEAD
+gh pr create --title "feat: add roadmap slide" --template content.md   # title = commit on main
+# templates: content.md, fix.md, chore.md (or omit --template for the default)
+gh pr merge --squash --auto
 ```
-The wrapper creates the private repo, pins the newest Node and npm at that moment (`.nvmrc`, Dockerfile,
-`.deck.json`), commits `chore: initialize ...`, pushes, and then protects `main` (`scripts/protect.sh`).
-Then in VS Code: **Reopen in Container**, `npm run dev`, open http://localhost:5173.
 
-## Created the repo in the web UI instead?
+Commit from inside the devcontainer (the hook needs the installed dependencies).
 
-Actions tab -> **Initialize deck** -> Run workflow (framework + Node channel), then `git pull`, then
-run `scripts/protect.sh` once. Initialize first: `main` rejects direct pushes after protection.
+## Build
 
-## Branch protection and commit convention
+`npm run build` writes a static, relocatable site to `dist/`.
+CI uploads it as the `deck` artifact on every push (Actions tab).
 
-`scripts/protect.sh` applies `.github/rulesets/main.json` to the default branch: PR required (no approvals,
-so you can merge your own), `build` check required, linear history, no force-push, no deletion, and a
-commit-message regex for Conventional Commits. It also restricts merging to squash and enables auto-merge
-and branch auto-delete. The local commit-msg hook (husky + commitlint) gives immediate feedback.
-Rulesets on private repos need GitHub Pro, Team or Enterprise Cloud.
+## Re-pin Node/npm
 
-## Issue and PR templates
+`node scripts/init.mjs --refresh-node` (set `DECK_NODE_CHANNEL=lts` for LTS), then rebuild the container.
 
-- Issues: `.github/ISSUE_TEMPLATE/` (presentation brief, content task, build/render problem, review feedback,
-  maintenance). Blank issues are disabled in `config.yml`.
-- Pull requests: `.github/PULL_REQUEST_TEMPLATE.md` is the default; `content.md`, `fix.md` and `chore.md` live in
-  `.github/PULL_REQUEST_TEMPLATE/` and are selected with `gh pr create --template <file>` or `?template=<file>` in the URL.
-- Squash merges use the PR title only (`protect.sh` sets the commit body to blank), so template text never lands on `main`.
+## Publish (optional, read first)
 
-## Notes
-
-- Node/npm are resolved when the deck is created and then pinned. Re-pin with `node scripts/init.mjs --refresh-node`.
-- impress.js is vendored (`public/vendor/impress.js`, version in `IMPRESS_VERSION`); a weekly workflow opens a PR
-  for new releases (needs "Allow GitHub Actions to create and approve pull requests").
-- GitHub Pages is opt-in and **public** unless you are on Enterprise Cloud. See the generated deck README.
-- `.template/` and `scripts/init.mjs` only matter until a repo is initialized.
+On every plan except GitHub Enterprise Cloud, a GitHub Pages site is public even if this repository is private.
+Do not enable Pages for confidential decks. To enable it deliberately:
+`gh api -X POST repos/<owner>/261030-lis-bioinf/pages -f build_type=workflow`, then run the "Deploy to GitHub Pages" workflow.
