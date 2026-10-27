@@ -8,6 +8,18 @@ Framework: **reveal.js** | Node 26.12.1 | npm 12.2.1 (pinned in `.deck.json`)
 2. `npm run dev` and open http://localhost:5173
 3. Edit index.html and src/main.js; styles are in `src/theme.css`.
 
+## Slides and translations
+
+Slide content lives in `index.html`. Text marked with `data-i18n` is translated by the Reveal.js Internation plugin using `locales/en.json` and `locales/no.json`; Norwegian (`no`) is the default, with English available in the language selector. Keep each slide's translation keys aligned with its section ID in both JSON files. Navigation labels are in each file's `menubar` object.
+
+Internation 1.1.0 declares a Reveal.js 4 peer range; `.npmrc` allows installation with this deck's Reveal.js 6 dependency. The JSON catalogs are imported into the Vite bundle for reliable loading.
+
+## Test a Pages build
+
+Run `npm run build` followed by `npm run preview` to test the production build locally at http://localhost:4173. The relative asset base also supports GitHub Pages project URLs.
+
+The **Deploy to GitHub Pages** workflow can be run manually from a branch using **Actions → Deploy to GitHub Pages → Run workflow**. This publishes that branch to the repository's configured Pages site, replacing its current deployment; it is not an isolated preview. GitHub Pages is public on most plans, even when the repository is private. Use the local preview when you do not want to publish the content.
+
 ## Commits and branch protection
 
 `main` is protected: no direct pushes, no force-push, squash merges only, the `build` check must pass,

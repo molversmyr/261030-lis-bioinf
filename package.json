@@ -3,13 +3,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite --host --open /index.html",
     "build": "vite build",
     "preview": "vite preview --host",
     "prepare": "husky"
   },
   "dependencies": {
-    "reveal.js": "6.0.2"
+    "reveal.js": "6.0.2",
+    "reveal.js-internation": "^1.1.0",
+    "reveal.js-simplemenu": "^2.2.0",
+    "reveal.js-smallcontrol": "^1.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "21.2.4",
