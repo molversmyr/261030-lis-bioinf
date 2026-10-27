@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite --host --open /index.html",
     "build": "vite build",
     "preview": "vite preview --host",
     "prepare": "husky"
