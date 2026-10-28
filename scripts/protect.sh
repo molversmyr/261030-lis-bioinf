@@ -15,9 +15,12 @@ else
   method=POST; url="repos/$repo/rulesets"
 fi
 
-if ! gh api --method "$method" "$url" --input .github/rulesets/main.json >/dev/null; then
-  echo "Could not apply the ruleset to $repo." >&2
-  echo "Rulesets on private repositories need GitHub Pro, Team or Enterprise Cloud." >&2
+if ! out="$(gh api --method "$method" "$url" --input .github/rulesets/main.json 2>&1)"; then
+  echo "Could not apply the ruleset to $repo:" >&2
+  echo "$out" >&2
+  if grep -q "HTTP 403" <<<"$out"; then
+    echo "Rulesets on private repositories need GitHub Pro, Team or Enterprise Cloud." >&2
+  fi
   exit 1
 fi
 
@@ -26,4 +29,4 @@ gh api --method PATCH "repos/$repo" \
   -F allow_auto_merge=true -F delete_branch_on_merge=true \
   -f squash_merge_commit_title=PR_TITLE -f squash_merge_commit_message=BLANK >/dev/null
 
-echo "Protected $repo: PR required, squash only (title only, no body), linear history, 'build' check, Conventional Commits."
+echo "Protected $repo: PR required, squash only (title only, no body), linear history, 'build' and 'pr-title' checks."

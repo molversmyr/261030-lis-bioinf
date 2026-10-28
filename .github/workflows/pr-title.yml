@@ -1,0 +1,32 @@
+# Required status check "pr-title" (see .github/rulesets/main.json).
+# With squash merges the PR title becomes the commit on main, so this enforces Conventional Commits there.
+# workflow_dispatch lets bot-created PRs (GITHUB_TOKEN does not trigger pull_request) report the check too.
+name: PR title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      title:
+        description: Title to validate
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Conventional Commits format
+        env:
+          TITLE: ${{ github.event.pull_request.title || inputs.title }}
+        run: |
+          re='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-z0-9._-]+\))?!?: [^ ].*$'
+          if [[ "$TITLE" =~ $re ]]; then
+            echo "OK: $TITLE"
+          else
+            echo "::error::PR title must look like 'feat: add roadmap slide' (types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test). Got: $TITLE"
+            exit 1
+          fi

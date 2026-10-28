@@ -38,17 +38,11 @@
         "required_status_checks": [
           {
             "context": "build"
+          },
+          {
+            "context": "pr-title"
           }
         ]
-      }
-    },
-    {
-      "type": "commit_message_pattern",
-      "parameters": {
-        "name": "Conventional Commits",
-        "negate": false,
-        "operator": "regex",
-        "pattern": "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\([\\w\\-\\.]+\\))?(!)?: ([\\w ])+([\\s\\S]*)"
       }
     }
   ]

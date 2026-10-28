@@ -40,4 +40,5 @@ jobs:
           git commit -m "build(deps): update impress.js to $latest"
           git push origin "$branch"
           gh pr create --title "build(deps): update impress.js to $latest" --body "Automated update of the vendored impress.js." --base "${{ github.event.repository.default_branch }}" --head "$branch"
+          gh workflow run pr-title.yml --ref "$branch" -f title="build(deps): update impress.js to $latest"
           gh workflow run build.yml --ref "$branch"
