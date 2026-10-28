@@ -1,0 +1,9 @@
+# Refuse direct pushes to main (server-side protection is the real gate; this gives instant feedback).
+# Git feeds one line per ref on stdin: <local ref> <local sha> <remote ref> <remote sha>
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    echo "Direct pushes to main are blocked. Create a branch, push it, and open a PR:" >&2
+    echo "  git switch -c feat/my-change && git push -u origin HEAD && gh pr create --title \"feat: ...\"" >&2
+    exit 1
+  fi
+done
