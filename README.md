@@ -24,7 +24,7 @@ The **Deploy to GitHub Pages** workflow can be run manually from a branch using 
 
 `main` is protected: no direct pushes, no force-push, squash merges only, the `build` check must pass,
 and every commit message must follow Conventional Commits (`feat: ...`, `fix: ...`, `docs: ...`).
-A local hook (commitlint) checks each commit; GitHub enforces the same rule on `main`.
+A local hook (commitlint) checks each commit; the `pr-title` check enforces the format on the PR title, which becomes the commit on `main`.
 
 ```bash
 git switch -c feat/roadmap-slide
