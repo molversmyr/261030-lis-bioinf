@@ -49,7 +49,18 @@ const menuDictionaries = {
   en: english.menubar,
   no: norwegian.menubar,
 };
+const languageFlags = {
+  en: new URL('../assets/en.png', import.meta.url).href,
+  no: new URL('../assets/no.png', import.meta.url).href,
+};
 const languageSelector = document.querySelector('.langchooser');
+const languageFlag = document.querySelector('#language-flag');
+
+const updateLanguageFlag = (language) => {
+  const flag = languageFlags[language];
+  if (!flag) throw new Error(`Missing flag for language "${language}"`);
+  languageFlag.src = flag;
+};
 
 const translateMenubar = (language) => {
   const dictionary = menuDictionaries[language];
@@ -67,7 +78,12 @@ const translateMenubar = (language) => {
 };
 
 languageSelector.addEventListener('change', (event) => {
-  translateMenubar(event.currentTarget.value);
+  const language = event.currentTarget.value;
+  translateMenubar(language);
+  updateLanguageFlag(language);
 });
-deck.on('ready', () => translateMenubar(languageSelector.value));
+deck.on('ready', () => {
+  translateMenubar(languageSelector.value);
+  updateLanguageFlag(languageSelector.value);
+});
 deck.initialize();

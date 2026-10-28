@@ -758,6 +758,21 @@ body {
   font-size: 0.65rem;
 }
 
+.menubar .language-choice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.menubar .language-flag {
+  display: block;
+  width: 22px;
+  height: 15px;
+  object-fit: cover;
+  border: 1px solid rgba(192, 211, 231, 0.25);
+  border-radius: 2px;
+}
+
 .menubar select:focus-visible {
   outline: 2px solid var(--teal);
   outline-offset: 2px;
