@@ -73,7 +73,7 @@ body {
 .reveal h1 {
   max-width: 760px;
   margin: 0 0 24px;
-  font-size: clamp(2.5rem, 4vw, 4.5rem);
+  font-size: clamp(2.5rem, 3.6vw, 4.25rem);
   line-height: 1.04;
   letter-spacing: -0.045em;
 }
@@ -714,7 +714,7 @@ body {
 
 .menubar .brand {
   color: var(--teal);
-  font-size: clamp(0.52rem, 0.7vw, 0.72rem);
+  font-size: clamp(0.5rem, 0.75vw, 0.9rem);
   font-weight: 800;
   letter-spacing: 0.12em;
   white-space: nowrap;
@@ -728,7 +728,7 @@ body {
 .menubar .menu li,
 .menubar .menu a {
   color: #9aabbe;
-  font-size: clamp(0.48rem, 0.72vw, 0.72rem);
+  font-size: clamp(0.5rem, 0.75vw, 0.9rem);
   font-weight: 550;
   white-space: nowrap;
 }
@@ -743,7 +743,7 @@ body {
   align-items: center;
   gap: 8px;
   color: #8799ad;
-  font-size: 0.75rem;
+  font-size: clamp(0.5rem, 0.75vw, 0.9rem);
   white-space: nowrap;
 }
 
@@ -755,7 +755,7 @@ body {
   background: #122033;
   color: var(--ink);
   font: inherit;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
 }
 
 .menubar .language-choice {
