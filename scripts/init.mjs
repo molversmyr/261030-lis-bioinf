@@ -22,8 +22,10 @@ const cmp = (a, b) => {
 
 // nodejs.org/dist/index.json is date-sorted across all release lines, so index[0] can be a
 // patch of an older line. Take the highest semver instead.
+const isStable = (e) => /^v?\d+\.\d+\.\d+$/.test(e.version);
+
 export function pickNode(index, channel) {
-  const pool = channel === 'lts' ? index.filter((e) => e.lts) : index;
+  const pool = (channel === 'lts' ? index.filter((e) => e.lts) : index).filter(isStable);
   if (!pool.length) throw new Error(`no ${channel} Node release found`);
   return pool.map((e) => strip(e.version)).reduce((a, b) => (cmp(a, b) >= 0 ? a : b));
 }
@@ -34,31 +36,48 @@ async function getJson(url) {
   return res.json();
 }
 
-// Official image tags can lag a new Node release by hours/days: fall back to the major tag.
-async function imageTag(version) {
+const DOCKER_TAGS_URL = process.env.DECK_DOCKER_TAGS_URL || 'https://hub.docker.com/v2/repositories/library/node/tags';
+
+// true = tag exists, false = definitely missing, null = could not check (offline/proxy)
+async function imageTagExists(tag) {
   try {
-    const res = await fetch(`https://hub.docker.com/v2/repositories/library/node/tags/${version}-bookworm`);
-    if (res.status === 404) {
-      console.warn(`Docker tag node:${version}-bookworm not published yet; using node:${version.split('.')[0]}-bookworm.`);
-      return version.split('.')[0];
-    }
+    const res = await fetch(`${DOCKER_TAGS_URL}/${tag}`);
+    if (res.status === 404) return false;
+    return res.ok ? true : null;
   } catch {
-    /* Docker Hub unreachable (proxy/offline): assume the tag exists */
+    return null;
   }
-  return version;
+}
+
+// Stable releases of the channel, newest first.
+export function candidates(index, channel) {
+  const pool = (channel === 'lts' ? index.filter((e) => e.lts) : index).filter(isStable);
+  return pool.map((e) => strip(e.version)).sort((a, b) => cmp(b, a));
+}
+
+// New releases can lag on Docker Hub, and a brand-new major may have no official images at all:
+// walk down from the newest release until the image tag exists.
+async function pickImageVersion(list) {
+  for (const version of list.slice(0, 15)) {
+    if ((await imageTagExists(`${version}-bookworm`)) === false) {
+      console.warn(`node:${version}-bookworm is not on Docker Hub (yet); trying an older release.`);
+      continue;
+    }
+    return version;
+  }
+  throw new Error('no recent Node release has an official Docker image');
 }
 
 // Resolves Node + npm, rewrites .nvmrc and the Dockerfile. Returns what to record in .deck.json.
 async function pinToolchain(root, channel) {
   try {
-    const node = pickNode(await getJson(NODE_INDEX_URL), channel);
+    const node = await pickImageVersion(candidates(await getJson(NODE_INDEX_URL), channel));
     const npm = (await getJson(NPM_LATEST_URL)).version;
-    const tag = await imageTag(node);
 
     writeFileSync(join(root, '.nvmrc'), `${node}\n`);
     const dockerfile = join(root, '.devcontainer', 'Dockerfile');
     const text = readFileSync(dockerfile, 'utf8')
-      .replace(/^FROM node:.*$/m, `FROM node:${tag}-bookworm`)
+      .replace(/^FROM node:.*$/m, `FROM node:${node}-bookworm`)
       .replace(/^RUN npm install -g npm@.*$/m, `RUN npm install -g npm@${npm}`);
     writeFileSync(dockerfile, text);
     return { node, npm };
@@ -150,9 +169,9 @@ Framework: **${framework === 'reveal' ? 'reveal.js' : 'impress.js'}** | Node ${n
 
 ## Commits and branch protection
 
-\`main\` is protected: no direct pushes, no force-push, squash merges only, the \`build\` check must pass,
+\`main\` is meant to be protected (GitHub enforces this only on public repos on the Free plan: run \`scripts/protect.sh\` once the repo is public): no direct pushes, no force-push, squash merges only, the \`build\` check must pass,
 and every commit message must follow Conventional Commits (\`feat: ...\`, \`fix: ...\`, \`docs: ...\`).
-A local hook (commitlint) checks each commit; GitHub enforces the same rule on \`main\`.
+A local hook (commitlint) checks each commit; the \`pr-title\` check enforces the format on the PR title, which becomes the commit on \`main\`.
 
 \`\`\`bash
 git switch -c feat/roadmap-slide
@@ -168,6 +187,7 @@ Commit from inside the devcontainer (the hook needs the installed dependencies).
 ## Build
 
 \`npm run build\` writes a static, relocatable site to \`dist/\`.
+\`npm run build:pdf\` also writes \`dist/${name}.pdf\` (uses the Chromium installed in the devcontainer).
 CI uploads it as the \`deck\` artifact on every push (Actions tab).
 
 ## Re-pin Node/npm

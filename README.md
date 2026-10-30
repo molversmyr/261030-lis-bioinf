@@ -40,6 +40,8 @@ Commit from inside the devcontainer (the hook needs the installed dependencies).
 ## Build
 
 `npm run build` writes a static, relocatable site to `dist/`.
+`npm run build:pdf` also writes `dist/pdf-test.pdf` (uses the Chromium installed in the devcontainer). Alternatively, follow [the official reveal.js instructions](https://revealjs.com/pdf-export/) for easily exporting from a Chromium-based web browser
+
 CI uploads it as the `deck` artifact on every push (Actions tab).
 
 ## Re-pin Node/npm

@@ -2,6 +2,13 @@
   "name": "Presentation deck",
   "build": { "dockerfile": "Dockerfile" },
   "remoteUser": "node",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "configureZshAsDefaultShell": true
+    }
+  },
   "forwardPorts": [5173, 4173],
   "portsAttributes": {
     "5173": { "label": "Dev server", "onAutoForward": "notify" },
