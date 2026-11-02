@@ -40,9 +40,44 @@ Commit from inside the devcontainer (the hook needs the installed dependencies).
 ## Build
 
 `npm run build` writes a static, relocatable site to `dist/`.
-`npm run build:pdf` also writes `dist/pdf-test.pdf` (uses the Chromium installed in the devcontainer). Alternatively, follow [the official reveal.js instructions](https://revealjs.com/pdf-export/) for easily exporting from a Chromium-based web browser
 
-CI uploads it as the `deck` artifact on every push (Actions tab).
+## PDF export
+
+`npm run build:pdf` builds the deck and writes `dist/261030-lis-bioinf.pdf` (`npm run pdf` alone if `dist/` is current).
+It uses the Chromium installed in the devcontainer image (`CHROMIUM_PATH`).
+
+- Default for both frameworks: one screen-rendered PNG per slide/step, embedded in a PDF.
+  This captures screen backgrounds and spatial impress.js overview steps. Text is not selectable,
+  links are not interactive, and file size may be larger than a vector PDF.
+- reveal: captures the final fragment state once per slide, including vertical and uncounted slides.
+- impress: captures each `.step` in DOM order using zero-duration `goto()` and waits for `impress:steprefresh`.
+  Custom routes and substep animations need a deck-specific `window.preparePdfSlide` hook.
+- Optional reveal.js native/vector export: `PDF_MODE=native npm run build:pdf`.
+  This uses the print layout and retains selectable text. Tall slides may span multiple pages.
+  It is not a workaround for PDF-viewer differences.
+
+The default capture size is 1920 x 1080. Override it with `PDF_WIDTH` and `PDF_HEIGHT` to match
+the intended display aspect ratio. Use `PDF_PAUSE_MS` (default 300) for additional settling time.
+The exporter also waits for framework readiness, network idle, fonts and visible images.
+For asynchronous charts or custom state, define an async `window.preparePdfSlide({ framework, index })` function in the deck; it is called after navigation, with a zero-based index (null in native mode).
+Resolve it only when the content is ready. Videos are paused at their current frame; use a poster or the hook for a deliberate still. This exporter does not make arbitrary iframes or animation deterministic.
+
+Existing initialized deck repositories do not inherit template updates. Copy the revised
+`scripts/export-pdf.mjs` and, for reveal.js, merge the `src/main.js` export integration into each deck.
+Rebuild before exporting. The npm commands, package dependencies and Vite configuration stay the same.
+
+### Examples
+
+```bash
+# Build and create a screenshot-based PDF, with either framework:
+npm run build:pdf
+
+# Build and use reveal.js' native print layout:
+PDF_MODE=native npm run build:pdf
+
+# Example capture settings:
+PDF_WIDTH=1920 PDF_HEIGHT=1080 PDF_PAUSE_MS=500 npm run build:pdf
+```
 
 ## Re-pin Node/npm
 
