@@ -86,4 +86,9 @@ deck.on('ready', () => {
   translateMenubar(languageSelector.value);
   updateLanguageFlag(languageSelector.value);
 });
+// The exporter (and DeckTape, if adopted later) needs the initialized instance.
+window.Reveal = deck;
+window.__pdfReady = false;
+deck.on('pdf-ready', () => { window.__pdfReady = true; });
 deck.initialize();
+
