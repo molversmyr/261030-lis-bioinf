@@ -21,6 +21,6 @@
     "@commitlint/cli": "21.2.4",
     "@commitlint/config-conventional": "21.2.4",
     "husky": "9.1.7",
-    "vite": "8.3.5"
+    "vite": "8.3.6"
   }
 }
